@@ -1,6 +1,7 @@
 package com.magic.api.domain;
 
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.util.List;
 public class Deck {
 
     @Id
-    @GeneratedValue(generator = "UID")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UID id;
 
     private Card commander;

@@ -4,16 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
+
 public enum Color {
 
-    WHITE,
-    BLUE,
-    BLACK,
-    RED,
-    GREEN,
-    COLORLESS;
+    W,
+    U,
+    B,
+    R,
+    G,
+
 
 }
