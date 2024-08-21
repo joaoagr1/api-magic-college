@@ -2,7 +2,7 @@ package com.magic.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.Map;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
 public class Card {
 
     @Id
@@ -44,7 +45,12 @@ public class Card {
     private String toughness;
 
     @JsonProperty("colors")
+    @ElementCollection(targetClass = Color.class)
+    @CollectionTable(name = "card_colors", joinColumns = @JoinColumn(name = "card_id"))
+    @Column(name = "color")
+    @Enumerated(EnumType.STRING)
     private List<Color> colors;
+
 
     @JsonProperty("legalities")
     @JsonIgnore
@@ -60,6 +66,7 @@ public class Card {
     private String rarity;
 
     @JsonIgnore
+    @Transient
     public Map<String, String> getLegalities() {
         return legalities;
     }

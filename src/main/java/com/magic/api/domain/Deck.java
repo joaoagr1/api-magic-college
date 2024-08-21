@@ -1,8 +1,6 @@
 package com.magic.api.domain;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,16 +13,25 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
 public class Deck {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UID id;
+    private String id;
 
     private Card commander;
 
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<Color> colors;
 
+    @ManyToMany
+    @JoinTable(
+            name = "deck_cards",
+            joinColumns = @JoinColumn(name = "deck_id"),
+            inverseJoinColumns = @JoinColumn(name = "card_id")
+    )
     private List<Card> cards;
 
 
