@@ -1,7 +1,6 @@
 package com.magic.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -47,6 +46,7 @@ public class Card {
     @JsonProperty("colors")
     private List<Color> colors;
 
+    @JsonProperty("legalities")
     @JsonIgnore
     private Map<String, String> legalities;
 
@@ -58,4 +58,14 @@ public class Card {
 
     @JsonProperty("rarity")
     private String rarity;
+
+    @JsonIgnore
+    public Map<String, String> getLegalities() {
+        return legalities;
+    }
+
+    @JsonProperty("legalities")
+    public void setLegalities(Map<String, String> legalities) {
+        this.legalities = legalities;
+    }
 }

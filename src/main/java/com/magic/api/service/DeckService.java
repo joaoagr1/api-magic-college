@@ -2,10 +2,10 @@ package com.magic.api.service;
 
 import com.magic.api.domain.Card;
 import com.magic.api.domain.Deck;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClientException;
 
 import java.util.Map;
 
@@ -18,79 +18,37 @@ public class DeckService {
         this.restTemplate = restTemplate;
     }
 
-
-    public boolean validateCardAsCommander(String commanderId) {
-
-        String url = "https://api.scryfall.com/cards/" + commanderId;
-
+    private Card fetchCard(String cardId) {
+        String url = "https://api.scryfall.com/cards/" + cardId;
         try {
-            Card response = restTemplate.getForObject(url, Card.class);
-
-            if (response == null) {
-                return false;
-            }
-
-            Map<String, String> legalities = response.getLegalities();
-            String commanderLegality = legalities.get("commander");
-
-            return "legal".equals(commanderLegality);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-
-            return false;
-        } catch (Exception e) {
-
-            return false;
+            return restTemplate.getForObject(url, Card.class);
+        } catch (RestClientException e) {
+            return null;
         }
-
     }
 
-
-    public boolean validateCard(String commanderId) {
-
-        String url = "https://api.scryfall.com/cards/" + commanderId;
-
-        try {
-            Card response = restTemplate.getForObject(url, Card.class);
-
-            return response != null;
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-
-            return false;
-        } catch (Exception e) {
-
+    public boolean validateCardAsCommander(String commanderId) {
+        Card card = fetchCard(commanderId);
+        if (card == null) {
             return false;
         }
+        Map<String, String> legalities = card.getLegalities();
+        return "legal".equals(legalities.get("commander"));
+    }
 
-
+    public boolean validateCard(String commanderId) {
+        return fetchCard(commanderId) != null;
     }
 
     public boolean validateCommander(String commanderId) {
-
-        boolean cardExists = validateCard(commanderId);
-        boolean isCommander = validateCardAsCommander(commanderId);
-
-        return cardExists && isCommander;
+        return validateCard(commanderId) && validateCardAsCommander(commanderId);
     }
 
     public Card getCommander(String commanderId) {
-
-        String url = "https://api.scryfall.com/cards/" + commanderId;
-
-        try {
-            return restTemplate.getForObject(url, Card.class);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-
-            return null;
-        } catch (Exception e) {
-
-            return null;
-        }
+        return fetchCard(commanderId);
     }
 
     public Deck createDeck(Card commander) {
-
-        Deck newDeck = new Deck(commander);
-
-        return newDeck;
+        return new Deck(commander);
     }
 }
