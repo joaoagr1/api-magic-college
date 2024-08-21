@@ -51,11 +51,7 @@ public class Card {
     private String toughness;
 
     @Transient
-    @JsonProperty("legalities")
-    @ElementCollection
-    @CollectionTable(name = "card_legalities", joinColumns = @JoinColumn(name = "card_id"))
-    @MapKeyColumn(name = "format")
-    @Column(name = "status")
+    @JsonIgnore
     private Map<String, String> legalities;
 
 
@@ -69,5 +65,14 @@ public class Card {
     @Column(name = "color")
     @Enumerated(EnumType.STRING)
     private List<Color> colors;
+
+    @JsonProperty("legalities")
+    public void setLegalities(Map<String, String> legalities) {
+        this.legalities = legalities;
+    }
+    @JsonProperty("legalities")
+    public Map<String, String> getLegalities() {
+        return legalities;
+    }
 
 }
