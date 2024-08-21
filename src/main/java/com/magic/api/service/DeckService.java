@@ -62,7 +62,7 @@ public class DeckService {
     @Transactional
     public Deck createDeck(Card commander) {
         // Save the commander card first if it's not already saved
-        Card savedCommander = cardRepository.findById(commander.getId()).orElseGet(() -> cardRepository.save(commander));
+        Card savedCommander = cardRepository.findById(commander.getCardId()).orElseGet(() -> cardRepository.save(commander));
 
         Deck newDeck = new Deck(savedCommander);
         deckRespository.save(newDeck);

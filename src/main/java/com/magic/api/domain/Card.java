@@ -19,10 +19,21 @@ public class Card {
 
     @Id
     @JsonProperty("id")
-    private String id;
+    private String cardId;
+
+    @JsonProperty("set_name")
+    private String setName;
 
     @JsonProperty("name")
     private String name;
+
+    @JsonProperty("type_line")
+    private String typeLine;
+
+    @Lob
+    @JsonProperty("oracle_text")
+    private String oracleText;
+
 
     @JsonProperty("released_at")
     private String releasedAt;
@@ -33,25 +44,11 @@ public class Card {
     @JsonProperty("cmc")
     private Double cmc;
 
-    @JsonProperty("type_line")
-    private String typeLine;
-
-    @Lob
-    @JsonProperty("oracle_text")
-    private String oracleText;
-
     @JsonProperty("power")
     private String power;
 
     @JsonProperty("toughness")
     private String toughness;
-
-    @JsonProperty("colors")
-    @ElementCollection(targetClass = Color.class)
-    @CollectionTable(name = "card_colors", joinColumns = @JoinColumn(name = "card_id"))
-    @Column(name = "color")
-    @Enumerated(EnumType.STRING)
-    private List<Color> colors;
 
     @Transient
     @JsonProperty("legalities")
@@ -61,12 +58,16 @@ public class Card {
     @Column(name = "status")
     private Map<String, String> legalities;
 
-    @JsonProperty("set_name")
-    private String setName;
-
-    @JsonProperty("rulings_uri")
-    private String rulingsUri;
 
     @JsonProperty("rarity")
     private String rarity;
+
+
+    @JsonProperty("colors")
+    @ElementCollection(targetClass = Color.class)
+    @CollectionTable(name = "card_colors", joinColumns = @JoinColumn(name = "card_id"))
+    @Column(name = "color")
+    @Enumerated(EnumType.STRING)
+    private List<Color> colors;
+
 }

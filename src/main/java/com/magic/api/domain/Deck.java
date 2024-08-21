@@ -19,15 +19,15 @@ public class Deck {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
-    @ManyToOne
-    @JoinColumn(name = "commander_id")
-    private Card commander;
+    private String deckId;
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Color> colors;
+
+    @ManyToOne
+    @JoinColumn(name = "commander_id")
+    private Card commander;
 
     @Nullable
     @ManyToMany
