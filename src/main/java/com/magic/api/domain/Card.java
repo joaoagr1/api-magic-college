@@ -14,6 +14,7 @@ import java.util.Map;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Table(name = "card")
 public class Card {
 
     @Id
@@ -35,6 +36,7 @@ public class Card {
     @JsonProperty("type_line")
     private String typeLine;
 
+    @Lob
     @JsonProperty("oracle_text")
     private String oracleText;
 
@@ -45,12 +47,18 @@ public class Card {
     private String toughness;
 
     @JsonProperty("colors")
+    @ElementCollection(targetClass = Color.class)
+    @CollectionTable(name = "card_colors", joinColumns = @JoinColumn(name = "card_id"))
+    @Column(name = "color")
+    @Enumerated(EnumType.STRING)
     private List<Color> colors;
 
-
-    @JsonProperty("legalities")
-    @JsonIgnore
     @Transient
+    @JsonProperty("legalities")
+    @ElementCollection
+    @CollectionTable(name = "card_legalities", joinColumns = @JoinColumn(name = "card_id"))
+    @MapKeyColumn(name = "format")
+    @Column(name = "status")
     private Map<String, String> legalities;
 
     @JsonProperty("set_name")
@@ -61,15 +69,4 @@ public class Card {
 
     @JsonProperty("rarity")
     private String rarity;
-
-    @JsonIgnore
-    @Transient
-    public Map<String, String> getLegalities() {
-        return legalities;
-    }
-
-    @JsonProperty("legalities")
-    public void setLegalities(Map<String, String> legalities) {
-        this.legalities = legalities;
-    }
 }

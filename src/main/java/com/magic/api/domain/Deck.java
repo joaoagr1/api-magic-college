@@ -1,5 +1,6 @@
 package com.magic.api.domain;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class Deck {
     @Enumerated(EnumType.STRING)
     private List<Color> colors;
 
+    @Nullable
     @ManyToMany
     @JoinTable(
             name = "deck_cards",
