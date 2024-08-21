@@ -20,6 +20,8 @@ public class Deck {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @ManyToOne
+    @JoinColumn(name = "commander_id")
     private Card commander;
 
     @ElementCollection

@@ -45,15 +45,12 @@ public class Card {
     private String toughness;
 
     @JsonProperty("colors")
-    @ElementCollection(targetClass = Color.class)
-    @CollectionTable(name = "card_colors", joinColumns = @JoinColumn(name = "card_id"))
-    @Column(name = "color")
-    @Enumerated(EnumType.STRING)
     private List<Color> colors;
 
 
     @JsonProperty("legalities")
     @JsonIgnore
+    @Transient
     private Map<String, String> legalities;
 
     @JsonProperty("set_name")

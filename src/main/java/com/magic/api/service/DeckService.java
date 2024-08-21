@@ -38,7 +38,7 @@ public class DeckService {
             return false;
         }
         Map<String, String> legalities = card.getLegalities();
-        return "legal".equals(legalities.get("commander"));
+        return "legal".equals(legalities.get("commander")) && validateTypeLine(card);
     }
 
     public boolean validateCard(String commanderId) {
@@ -81,4 +81,14 @@ public class DeckService {
         List<Color> cardColors = card.getColors();
         return new HashSet<>(deckColors).containsAll(cardColors);
     }
+
+
+    public boolean validateTypeLine(Card card) {
+    String typeLine = card.getTypeLine();
+    return typeLine != null && typeLine.contains("Legendary Creature");
+}
+
+
+
+
 }
