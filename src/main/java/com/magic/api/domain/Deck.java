@@ -23,9 +23,10 @@ public class Deck {
 
     private Card commander;
 
+    private List<Color> colors;
+
     private List<Card> cards;
 
-    private List<Color> colors;
 
     public Deck(Card commander) {
 
