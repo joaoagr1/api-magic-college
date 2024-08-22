@@ -31,7 +31,7 @@ public class Deck {
     private Card commander;
 
     @Nullable
-    @ManyToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "deck_cards",
             joinColumns = @JoinColumn(name = "deck_id"),

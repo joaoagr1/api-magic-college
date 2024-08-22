@@ -99,8 +99,8 @@ public class DeckService {
 
     private void addCardOnObjectDeck(Card card, Deck newDeck) {
         // Save the card if it's not already saved
-        Card savedCard = cardRepository.findById(card.getCardId()).orElseGet(() -> cardRepository.save(card));
-        newDeck.getCards().add(savedCard);
+       // Card savedCard = cardRepository.findById(card.getCardId()).orElseGet(() -> cardRepository.save(card));
+        newDeck.getCards().add(card);
     }
 
     public boolean validateCommonCard(String cardId) {
