@@ -84,7 +84,7 @@ public class DeckService {
         String url = "https://api.scryfall.com/cards/random?q=" + query;
         System.out.println("Constructed URL: " + url);
 
-        for (int i = 0; i < 10  ; i++) {
+        for (int i = 0; i < 99  ; i++) {
             try {
                 Card card = restTemplate.getForObject(url, Card.class);
                 if (card != null && checkForDuplicateCardIds(newDeck, card)) {
