@@ -22,7 +22,10 @@ public class TokenService {
         String token = null;
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            token = JWT.create().withClaim("username", user.getUsername()).withClaim("email", user.getEmail()).sign(algorithm);
+            token = JWT.create().withClaim("username", user.getUsername())
+                    .withClaim("email", user.getEmail())
+                    .sign(algorithm);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -33,7 +36,7 @@ public class TokenService {
     public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm).withIssuer("auth-api").build().verify(token).getSubject();
+            return JWT.require(algorithm).build().verify(token).getSubject();
         } catch (JWTVerificationException exception) {
             return "";
         }

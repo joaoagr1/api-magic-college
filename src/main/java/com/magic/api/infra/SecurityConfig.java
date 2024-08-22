@@ -24,8 +24,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/auth/register").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/deck/create").authenticated()
+
                 )
                 .httpBasic(basic -> basic.disable())
                 .formLogin(login -> login.disable())
