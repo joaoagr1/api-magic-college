@@ -1,7 +1,7 @@
 package com.magic.api.service;
 
 import com.magic.api.domain.Card;
-import com.magic.api.domain.Color;
+import com.magic.api.controller.enums.Color;
 import com.magic.api.domain.Deck;
 import com.magic.api.repository.CardRepository;
 import com.magic.api.repository.DeckRespository;

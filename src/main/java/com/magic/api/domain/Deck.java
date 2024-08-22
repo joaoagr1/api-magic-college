@@ -1,5 +1,6 @@
 package com.magic.api.domain;
 
+import com.magic.api.controller.enums.Color;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.List;
 
