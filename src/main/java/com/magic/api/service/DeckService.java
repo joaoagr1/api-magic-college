@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DeckService {
@@ -67,7 +66,41 @@ public class DeckService {
         Deck newDeck = new Deck(savedCommander);
         deckRespository.save(newDeck);
 
+        addAllCardsRandomOnDeck(newDeck);
+
         return newDeck;
+    }
+
+    private void addAllCardsRandomOnDeck(Deck newDeck) {
+        List<Color> deckColors = newDeck.getCommander().getColors();
+        List<Color> allColors = Arrays.asList(Color.values());
+        Set<Color> excludedColors = new HashSet<>(allColors);
+        excludedColors.removeAll(deckColors);
+
+        String query = excludedColors.stream()
+                .map(color -> "-c:" + color.name().substring(0, 1).toLowerCase())
+                .collect(Collectors.joining(" "));
+
+        String url = "https://api.scryfall.com/cards/random?q=" + query;
+        System.out.println("Constructed URL: " + url);
+
+        for (int i = 0; i < 10  ; i++) {
+            try {
+                Card card = restTemplate.getForObject(url, Card.class);
+                if (card != null && checkForDuplicateCardIds(newDeck, card)) {
+                    addCardOnObjectDeck(card, newDeck);
+                    System.out.println(i);
+                }
+            } catch (RestClientException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addCardOnObjectDeck(Card card, Deck newDeck) {
+        // Save the card if it's not already saved
+        Card savedCard = cardRepository.findById(card.getCardId()).orElseGet(() -> cardRepository.save(card));
+        newDeck.getCards().add(savedCard);
     }
 
     public boolean validateCommonCard(String cardId) {
@@ -92,5 +125,9 @@ public class DeckService {
     public boolean validateTypeLine(Card card) {
         String typeLine = card.getTypeLine();
         return typeLine != null && typeLine.contains("Legendary Creature");
+    }
+
+    public boolean checkForDuplicateCardIds(Deck deck, Card card) {
+        return deck.getCards().stream().noneMatch(c -> c.getCardId().equals(card.getCardId()));
     }
 }

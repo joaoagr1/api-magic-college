@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.rmi.server.UID;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -36,7 +37,7 @@ public class Deck {
             joinColumns = @JoinColumn(name = "deck_id"),
             inverseJoinColumns = @JoinColumn(name = "card_id")
     )
-    private List<Card> cards;
+    private List<Card> cards = new ArrayList<>();
 
 
     public Deck(Card commander) {

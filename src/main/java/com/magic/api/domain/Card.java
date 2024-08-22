@@ -12,7 +12,6 @@ import java.util.Map;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "card")
 public class Card {
