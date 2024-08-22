@@ -42,6 +42,15 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public User(String username, String encodedPassword, String email) {
+
+        this.username = username;
+        this.password = encodedPassword;
+        this.email = email;
+
+
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
