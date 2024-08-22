@@ -1,6 +1,6 @@
 package com.magic.api.domain;
 
-import com.magic.api.controller.enums.Color;
+import com.magic.api.enums.Color;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,6 +21,10 @@ public class Deck {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String deckId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ElementCollection
     @Enumerated(EnumType.STRING)

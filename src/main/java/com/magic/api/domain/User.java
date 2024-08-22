@@ -1,7 +1,6 @@
 package com.magic.api.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -29,9 +29,10 @@ public class User implements UserDetails {
 
     private String email;
 
-    private String role;
-
+    @OneToMany
     private List<Deck> decks;
+
+    private String role;
 
 
     public User(String id, String username, String password, String email, String role) {
@@ -39,9 +40,7 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.role = role;
     }
-
 
 
     @Override

@@ -1,4 +1,4 @@
-package com.magic.api.controller.enums;
+package com.magic.api.enums;
 
 public enum Color {
 

@@ -1,7 +1,8 @@
 package com.magic.api.service;
 
 import com.magic.api.domain.Card;
-import com.magic.api.controller.enums.Color;
+import com.magic.api.domain.User;
+import com.magic.api.enums.Color;
 import com.magic.api.domain.Deck;
 import com.magic.api.repository.CardRepository;
 import com.magic.api.repository.DeckRespository;
@@ -59,7 +60,7 @@ public class DeckService {
     }
 
     @Transactional
-    public Deck createDeck(Card commander) {
+    public Deck createDeck(Card commander, User user) {
         // Save the commander card first if it's not already saved
         Card savedCommander = cardRepository.findById(commander.getCardId()).orElseGet(() -> cardRepository.save(commander));
 

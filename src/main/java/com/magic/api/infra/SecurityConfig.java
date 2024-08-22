@@ -2,6 +2,8 @@ package com.magic.api.infra;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,13 +20,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/deck/**").permitAll()
-                        .requestMatchers("/h2-console/**").permitAll() // Permite acesso ao H2 Console
+                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(basic -> basic.disable())
                 .formLogin(login -> login.disable())
                 .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.sameOrigin()) // Updated method for frame options
+                        .frameOptions(frameOptions -> frameOptions.sameOrigin())
                 );
 
         return http.build();
@@ -32,6 +34,11 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Configura codificação de senha
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
