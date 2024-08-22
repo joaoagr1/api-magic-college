@@ -2,8 +2,10 @@ package com.magic.api.controller;
 
 import com.magic.api.domain.User;
 import com.magic.api.records.AuthenticationDTO;
+import com.magic.api.records.AuthenticationResponseDTO;
 import com.magic.api.records.RegisterDTO;
 import com.magic.api.repository.UserRepository;
+import com.magic.api.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,12 +27,16 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Validated AuthenticationDTO data) {
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        return ResponseEntity.ok(auth);
+        var token = this.tokenService.generateToken((User) auth.getPrincipal());
+        return ResponseEntity.ok(new AuthenticationResponseDTO(token));
 
     }
 
@@ -39,11 +45,10 @@ public class AuthenticationController {
 
         String encodedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(data.username(), encodedPassword, data.email());
-
+        newUser.setRole("ROLE_USER"); // Ensure the role is set
         this.userRepository.save(newUser);
-
         return ResponseEntity.ok(data);
-    }
 
+    }
 
 }

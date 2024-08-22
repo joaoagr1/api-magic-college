@@ -1,10 +1,7 @@
 package com.magic.api.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +18,7 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     private String username;
@@ -34,23 +32,11 @@ public class User implements UserDetails {
 
     private String role;
 
-
-    public User(String id, String username, String password, String email, String role) {
-        this.id = id;
+    public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
     }
-
-    public User(String username, String encodedPassword, String email) {
-
-        this.username = username;
-        this.password = encodedPassword;
-        this.email = email;
-
-
-    }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -76,5 +62,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }
