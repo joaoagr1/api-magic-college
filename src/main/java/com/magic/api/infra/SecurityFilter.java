@@ -19,6 +19,7 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     TokenService tokenService;
+
     @Autowired
     UserRepository userRepository;
 
