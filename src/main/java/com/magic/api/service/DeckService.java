@@ -65,7 +65,8 @@ public class DeckService {
         Card savedCommander = cardRepository.findById(commander.getCardId()).orElseGet(() -> cardRepository.save(commander));
 
         Deck newDeck = new Deck(savedCommander);
-        deckRespository.save(newDeck);
+        deckRespository.save(commander);
+// erro em cima
 
         addAllCardsRandomOnDeck(newDeck);
 
