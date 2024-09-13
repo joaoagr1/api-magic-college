@@ -1,5 +1,6 @@
 package com.magic.api.domain;
 
+import com.magic.api.enums.Color;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +22,10 @@ public class Deck {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String deckId;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Color> colors;
@@ -31,7 +35,7 @@ public class Deck {
     private Card commander;
 
     @Nullable
-    @ManyToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "deck_cards",
             joinColumns = @JoinColumn(name = "deck_id"),

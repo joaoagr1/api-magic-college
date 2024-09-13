@@ -1,7 +1,8 @@
 package com.magic.api.service;
 
 import com.magic.api.domain.Card;
-import com.magic.api.domain.Color;
+import com.magic.api.domain.User;
+import com.magic.api.enums.Color;
 import com.magic.api.domain.Deck;
 import com.magic.api.repository.CardRepository;
 import com.magic.api.repository.DeckRespository;
@@ -59,12 +60,13 @@ public class DeckService {
     }
 
     @Transactional
-    public Deck createDeck(Card commander) {
+    public Deck createDeck(Card commander, User user) {
         // Save the commander card first if it's not already saved
         Card savedCommander = cardRepository.findById(commander.getCardId()).orElseGet(() -> cardRepository.save(commander));
 
         Deck newDeck = new Deck(savedCommander);
-        deckRespository.save(newDeck);
+        deckRespository.save(commander);
+// erro em cima
 
         addAllCardsRandomOnDeck(newDeck);
 
@@ -99,8 +101,8 @@ public class DeckService {
 
     private void addCardOnObjectDeck(Card card, Deck newDeck) {
         // Save the card if it's not already saved
-        Card savedCard = cardRepository.findById(card.getCardId()).orElseGet(() -> cardRepository.save(card));
-        newDeck.getCards().add(savedCard);
+       // Card savedCard = cardRepository.findById(card.getCardId()).orElseGet(() -> cardRepository.save(card));
+        newDeck.getCards().add(card);
     }
 
     public boolean validateCommonCard(String cardId) {
